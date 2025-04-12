@@ -1,12 +1,14 @@
 package by.yurhilevich.notification.message;
 
 import by.yurhilevich.notification.NotificationType;
+import lombok.Getter;
 import lombok.ToString;
 
 import java.time.LocalDateTime;
 
 @ToString(callSuper = true)
-public class EmailMessage extends Message {
+@Getter
+public final class EmailMessage extends Message {
     private final String linkAddress;
 
     public EmailMessage(String message, LocalDateTime time, String linkAddress) {
@@ -14,13 +16,13 @@ public class EmailMessage extends Message {
         this.linkAddress = linkAddress;
     }
 
+    public static EmailMessageBuilder builder() {
+        return new EmailMessageBuilder();
+    }
+
     @Override
     public NotificationType getMessageType() {
         return NotificationType.EMAIL;
-    }
-
-    public static EmailMessageBuilder builder() {
-        return new EmailMessageBuilder();
     }
 
     public static class EmailMessageBuilder extends MessageBuilder<EmailMessageBuilder> {

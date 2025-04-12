@@ -1,13 +1,14 @@
 package by.yurhilevich.notification.message;
 
 import by.yurhilevich.notification.NotificationType;
-import lombok.Builder;
+import lombok.Getter;
 import lombok.ToString;
 
 import java.time.LocalDateTime;
 
 @ToString(callSuper = true)
-public class TelegramMessage extends Message {
+@Getter
+public final class TelegramMessage extends Message {
     private final long chatId;
 
     public TelegramMessage(String message, LocalDateTime time, long chatId) {
@@ -15,13 +16,13 @@ public class TelegramMessage extends Message {
         this.chatId = chatId;
     }
 
+    public static TelegramMessageBuilder builder() {
+        return new TelegramMessageBuilder();
+    }
+
     @Override
     public NotificationType getMessageType() {
         return NotificationType.TELEGRAM;
-    }
-
-    public static TelegramMessageBuilder builder() {
-        return new TelegramMessageBuilder();
     }
 
     public static class TelegramMessageBuilder extends MessageBuilder<TelegramMessageBuilder> {

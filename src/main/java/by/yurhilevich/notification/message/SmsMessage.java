@@ -1,27 +1,36 @@
 package by.yurhilevich.notification.message;
 
 import by.yurhilevich.notification.NotificationType;
+import lombok.Getter;
 import lombok.ToString;
 
 import java.time.LocalDateTime;
 
 @ToString(callSuper = true)
-public class SmsMessage extends Message {
+@Getter
+public final class SmsMessage extends Message {
     private final long phoneNumber;
 
-    public SmsMessage(String message, LocalDateTime time, long phoneNumber) {
+    private SmsMessage(String message, LocalDateTime time, long phoneNumber) {
         super(message, time);
         this.phoneNumber = phoneNumber;
     }
 
-
-    @Override
-    public NotificationType getMessageType() {
+    public static NotificationType getSMS() {
         return NotificationType.SMS;
+    }
+
+    public static NotificationType getType() {
+        return NotificationType.TELEGRAM;
     }
 
     public static SmsMessageBuilder builder() {
         return new SmsMessageBuilder();
+    }
+
+    @Override
+    public NotificationType getMessageType() {
+        return getType();
     }
 
     public static class SmsMessageBuilder extends MessageBuilder<SmsMessageBuilder> {

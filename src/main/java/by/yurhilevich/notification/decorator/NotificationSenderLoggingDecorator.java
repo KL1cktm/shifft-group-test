@@ -8,7 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RequiredArgsConstructor
-public class NotificationSenderLoggingDecorator implements NotificationSender <Message> {
+public class NotificationSenderLoggingDecorator implements NotificationSender<Message> {
     private final NotificationSender<Message> notificationSender;
 
     @Override

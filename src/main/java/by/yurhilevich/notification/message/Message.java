@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 
 @ToString
 @AllArgsConstructor
-public abstract class Message {
+public abstract sealed class Message permits EmailMessage, SmsMessage, TelegramMessage {
     private final String message;
     private final LocalDateTime time;
 
