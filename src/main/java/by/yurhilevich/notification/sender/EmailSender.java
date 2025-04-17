@@ -1,5 +1,7 @@
 package by.yurhilevich.notification.sender;
 
+import by.yurhilevich.localosation.Localisation;
+import by.yurhilevich.exception.MessageValidationException;
 import by.yurhilevich.notification.NotificationType;
 import by.yurhilevich.notification.message.EmailMessage;
 import by.yurhilevich.notification.validator.Validator;
@@ -12,11 +14,10 @@ public class EmailSender implements NotificationSender<EmailMessage> {
 
     @Override
     public void sendNotification(EmailMessage message) {
-        if (validator.validate(message)) {
-            System.out.println(message);
-        } else {
-            System.out.println("Wrong Adress");
+        if (!validator.validate(message)) {
+            throw new MessageValidationException(Localisation.getText("bad"));
         }
+        System.out.println(message);
     }
 
     @Override

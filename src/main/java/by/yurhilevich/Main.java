@@ -1,32 +1,21 @@
 package by.yurhilevich;
 
-/*
- * написать проект, который будет отправлять нотфикации в разные мессенджеры
- * sms, telegram, email
- */
+import by.yurhilevich.answer.Answer;
+import by.yurhilevich.localosation.Localisation;
+import by.yurhilevich.notification.NotificationRunner;
 
-
-import by.yurhilevich.notification.decorator.NotificationSenderLoggingDecorator;
-import by.yurhilevich.notification.fabric.NotificationAllSendersFabric;
-import by.yurhilevich.notification.fabric.NotificationSendersFabric;
-import by.yurhilevich.notification.message.EmailMessage;
-import by.yurhilevich.notification.message.Message;
-import by.yurhilevich.notification.resolver.NotificationSendersResolver;
-import by.yurhilevich.notification.sender.NotificationSender;
-
-import java.time.LocalDateTime;
+import java.util.Locale;
 
 public class Main {
 
     public static void main(String[] args) {
-        Message message = EmailMessage.builder().setMessage("f").setTime(LocalDateTime.now()).setLinkAddress("ggg@gmailcom").build();
-        NotificationSendersFabric notificationSendersFabric = new NotificationAllSendersFabric();
-
-        NotificationSendersResolver resolver = new NotificationSendersResolver(notificationSendersFabric);
-        NotificationSender<Message> notificationSender = resolver.getNotificationSender(message.getMessageType());
-
-        NotificationSender<Message> decoratedNotificationSender = new NotificationSenderLoggingDecorator(notificationSender);
-        decoratedNotificationSender.sendNotification(message);
-
+        Localisation.setLocalisation(Locale.of("ru", "RU"));
+        NotificationRunner notificationRunner = new NotificationRunner();
+        Answer answer = notificationRunner.run();
+        if (answer.isFine()) {
+            System.out.println(Localisation.getText("good"));
+        } else {
+            answer.getExceptions().forEach(e -> System.out.println(e.getMessage()));
+        }
     }
 }
