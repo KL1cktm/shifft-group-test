@@ -1,6 +1,7 @@
 package by.shift.multithreading.order;
 
 
+import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -19,30 +20,33 @@ public class Main {
     public static void main(String[] args) {
         OrderRepository orderRepository = new OrderRepository();
 
-        IntStream.rangeClosed(0, 9)
-            .forEach(i -> {
-                    Thread thread = new Thread(() -> {
-                        while (true) {
-                            orderRepository.get();
+        List<Thread> consumerList = IntStream.rangeClosed(0, 9)
+                .mapToObj(i -> {
+                            Thread thread = new Thread(() -> {
+                                while (true) {
+                                    orderRepository.get();
+                                }
+                            });
+                            thread.setName("Thread reader %d".formatted(i));
+                            return thread;
                         }
-                    });
-                    thread.setName("Thread reader %d".formatted(i));
-                    thread.start();
-                }
-            );
+                ).toList();
 
-        IntStream.rangeClosed(0, 100)
-            .forEach(i ->
-                {
-                    Thread thread = new Thread(() -> {
-                        int j = ThreadLocalRandom.current().nextInt(1, 10);
-                        sleep(j);
-                        orderRepository.add("\"Gift %d\"".formatted(atomicInteger.incrementAndGet()));
-                    });
-                    thread.setName("Thread writer %d".formatted(i));
-                    thread.start();
-                }
-            );
+        List<Thread> producerlist = IntStream.rangeClosed(0, 100)
+                .mapToObj(i ->
+                        {
+                            Thread thread = new Thread(() -> {
+                                int j = ThreadLocalRandom.current().nextInt(1, 10);
+                                sleep(j);
+                                orderRepository.add("\"Gift %d\"".formatted(atomicInteger.incrementAndGet()));
+                            });
+                            thread.setName("Thread writer %d".formatted(i));
+                            return thread;
+                        }
+                ).toList();
+
+        consumerList.forEach(Thread::start);
+        producerlist.forEach(Thread::start);
     }
 
     private static void sleep(int secondsSleeping) {

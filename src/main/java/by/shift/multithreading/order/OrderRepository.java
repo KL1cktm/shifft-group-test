@@ -14,17 +14,19 @@ public class OrderRepository {
         synchronized (list) {
             list.add(order);
             log.info("Gift is added {}", order);
+            list.notify();
         }
     }
 
     @SneakyThrows
     public void get() {
         synchronized (list) {
-            if (!list.isEmpty()) {
-                String first = list.getFirst();
-                list.removeFirst();
-                log.info("Gift {} is grab", first);
+            while (list.isEmpty()) {
+                list.wait();
             }
+            String first = list.getFirst();
+            list.removeFirst();
+            log.info("Gift {} is grab", first);
         }
     }
 }
