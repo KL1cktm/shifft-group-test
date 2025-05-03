@@ -3,6 +3,7 @@ package by.shift.notification.notification.decorator;
 import by.shift.notification.notification.NotificationType;
 import by.shift.notification.notification.message.Message;
 import by.shift.notification.notification.sender.NotificationSender;
+import by.shift.notification.response.Response;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -12,10 +13,11 @@ public class NotificationSenderLoggingDecorator implements NotificationSender<Me
     private final NotificationSender<Message> notificationSender;
 
     @Override
-    public void sendNotification(Message message) {
+    public Response sendNotification(Message message) {
         log.info("Sending notification");
-        this.notificationSender.sendNotification(message);
-        log.info("Notification sent successfully");
+        Response response=this.notificationSender.sendNotification(message);
+        log.info(response.statusCode());
+        return response;
     }
 
     @Override
