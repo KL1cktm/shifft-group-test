@@ -24,9 +24,9 @@ public class OrderRepository {
             while (list.isEmpty()) {
                 list.wait();
             }
-            String first = list.getFirst();
-            list.removeFirst();
-            log.info("Gift {} is grab", first);
+         //   String first = list.getFirst();
+          //  list.removeFirst();
+         //   log.info("Gift {} is grab", first);
         }
     }
 }

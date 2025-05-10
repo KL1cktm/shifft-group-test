@@ -9,7 +9,7 @@ import java.util.Locale;
 public class Main {
 
     public static void main(String[] args) {
-        Localisation.setLocalisation(Locale.of("ru", "RU"));
+//        Localisation.setLocalisation(Locale.of("ru", "RU"));
         NotificationRunner notificationRunner = new NotificationRunner();
         Answer answer = notificationRunner.run();
         if (answer.isFine()) {
