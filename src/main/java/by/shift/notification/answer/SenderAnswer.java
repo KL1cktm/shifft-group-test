@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SenderAnswer implements Answer {
-    private final List<Exception> exceptionList = new ArrayList<>();
+    private final List<Throwable> exceptionList = new ArrayList<>();
 
     @Override
     public boolean isFine() {
@@ -12,12 +12,12 @@ public class SenderAnswer implements Answer {
     }
 
     @Override
-    public List<Exception> getExceptions() {
+    public List<Throwable> getExceptions() {
         return exceptionList;
     }
 
     @Override
-    public void addException(Exception e) {
+    public void addException(Throwable e) {
         exceptionList.add(e);
     }
 }

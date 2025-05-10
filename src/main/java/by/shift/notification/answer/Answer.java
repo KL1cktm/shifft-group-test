@@ -5,7 +5,7 @@ import java.util.List;
 public interface Answer {
     boolean isFine();
 
-    List<Exception> getExceptions();
+    List<Throwable> getExceptions();
 
-    void addException(Exception e);
+    void addException(Throwable e);
 }
