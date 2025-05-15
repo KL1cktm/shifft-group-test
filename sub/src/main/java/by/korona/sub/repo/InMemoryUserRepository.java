@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 
 @Repository
 @RequiredArgsConstructor
-public class DefaultUserRepo implements UserRepo {
+public class InMemoryUserRepository implements UserRepo {
     private final List<User> users;
     private final ObjectMapper objectMapper;
 
