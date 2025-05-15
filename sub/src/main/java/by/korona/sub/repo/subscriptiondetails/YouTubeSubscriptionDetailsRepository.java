@@ -8,7 +8,7 @@ public class YouTubeSubscriptionDetailsRepository implements SubscriptionDetailR
     private List<YouTubeSubscriptionDetails> subscriptionDetails;
 
     @Override
-    public void createNewSubscription(YouTubeSubscriptionDetails subscriptionDetail) {
+    public void save(YouTubeSubscriptionDetails subscriptionDetail) {
         subscriptionDetails.add(subscriptionDetail);
     }
 }

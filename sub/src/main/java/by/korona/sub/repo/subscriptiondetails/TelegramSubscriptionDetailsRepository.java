@@ -12,7 +12,7 @@ public class TelegramSubscriptionDetailsRepository implements SubscriptionDetail
     private List<TelegramSubscriptionDetail> subscriptionDetails;
 
     @Override
-    public void createNewSubscription(TelegramSubscriptionDetail subscriptionDetail) {
+    public void save(TelegramSubscriptionDetail subscriptionDetail) {
         subscriptionDetails.add(subscriptionDetail);
     }
 }

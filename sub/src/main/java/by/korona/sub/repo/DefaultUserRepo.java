@@ -10,6 +10,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Repository
@@ -20,11 +21,10 @@ public class DefaultUserRepo implements UserRepo {
 
 
     //TODO вывод сообщение при отсутствии пользователя
-    public User findById(Long userId) {
+    public Optional<User> findById(Long userId) {
         return users.stream()
             .filter(channel -> channel.getId().equals(userId))
-            .findFirst()
-            .orElseThrow(() -> new RuntimeException("User not found"));//todo custom exception
+            .findFirst();
     }
 
     @PostConstruct

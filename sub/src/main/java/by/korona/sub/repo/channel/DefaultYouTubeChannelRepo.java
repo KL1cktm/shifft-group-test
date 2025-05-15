@@ -11,6 +11,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Repository
@@ -20,14 +21,14 @@ public class DefaultYouTubeChannelRepo implements ChannelRepo<YouTubeChannel> {
     private final ObjectMapper objectMapper;
 
     @Override
-    public YouTubeChannel findById(Long channelId) {
+    public Optional<YouTubeChannel> findById(Long channelId) {
         return channels.stream()
             .filter(channel -> channel.getId().equals(channelId))
-            .findFirst()
-            .orElseThrow(() -> new RuntimeException());//todo
+            .findFirst();
     }
+
     @PostConstruct
-    private void init(){
+    private void init() {
         try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(getClass().getClassLoader().getResourceAsStream("repository/youtube-channels.json")))) {
             String collect = bufferedReader.lines().collect(Collectors.joining());
             List<YouTubeChannel> list = objectMapper.readValue(collect, objectMapper.getTypeFactory().constructCollectionType(List.class, TelegramChannel.class));

@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import by.korona.sub.model.channel.TelegramChannel;
@@ -19,11 +20,10 @@ public class DefaultTelegramChannelRepo implements ChannelRepo<TelegramChannel> 
     private final ObjectMapper objectMapper;
 
     //TODO вывод сообщение при отсутствии канала
-    public TelegramChannel findById(Long channelId) {
+    public Optional<TelegramChannel> findById(Long channelId) {
         return channels.stream()
             .filter(channel -> channel.getId().equals(channelId))
-            .findFirst()
-            .orElseThrow(()->new RuntimeException());//todo
+            .findFirst();
     }
 
     @PostConstruct

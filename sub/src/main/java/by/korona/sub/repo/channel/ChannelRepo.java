@@ -2,6 +2,8 @@ package by.korona.sub.repo.channel;
 
 import by.korona.sub.model.channel.Channel;
 
+import java.util.Optional;
+
 public interface ChannelRepo<T extends Channel> {
-    T findById(Long channelId);
+    Optional<T> findById(Long channelId);
 }
