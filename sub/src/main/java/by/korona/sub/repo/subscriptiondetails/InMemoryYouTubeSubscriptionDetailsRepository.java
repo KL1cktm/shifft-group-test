@@ -13,6 +13,7 @@ import java.util.Optional;
 @Repository
 @RequiredArgsConstructor
 public class InMemoryYouTubeSubscriptionDetailsRepository implements SubscriptionDetailRepository<YouTubeSubscriptionDetails> {
+
     private final IdGenerator idGenerator;
     private final List<YouTubeSubscriptionDetails> subscriptionDetails;
 
@@ -24,9 +25,9 @@ public class InMemoryYouTubeSubscriptionDetailsRepository implements Subscriptio
                 subscriptionDetails.add(subscriptionDetail);
             }
             YouTubeSubscriptionDetails existingDetail = subscriptionDetails.stream()
-                .filter(s -> s.getId().equals(subscriptionDetail.getId()))
-                .findFirst()
-                .orElseThrow(() -> new SubscriptionDetailsNotFoundException("Id: %s not found".formatted(subscriptionDetail.getId())));
+                    .filter(s -> s.getId().equals(subscriptionDetail.getId()))
+                    .findFirst()
+                    .orElseThrow(() -> new SubscriptionDetailsNotFoundException("Id: %s not found".formatted(subscriptionDetail.getId())));
             subscriptionDetails.remove(existingDetail);
             subscriptionDetails.add(subscriptionDetail);
         }
@@ -36,9 +37,9 @@ public class InMemoryYouTubeSubscriptionDetailsRepository implements Subscriptio
     @Override
     public Optional<YouTubeSubscriptionDetails> findActiveSubscription(Long userId, Long channelId) {
         return subscriptionDetails.stream()
-            .filter(s -> s.getUser().getId().equals(userId))
-            .filter(s -> s.getChannel().getId().equals(channelId))
-            .filter(SubscriptionDetails::isSubscriptionStatus)
-            .findFirst();
+                .filter(s -> s.getUserId().equals(userId))
+                .filter(s -> s.getChannelId().equals(channelId))
+                .filter(SubscriptionDetails::isSubscriptionStatus)
+                .findFirst();
     }
 }

@@ -2,6 +2,8 @@ package by.korona.sub.model.subscripriondetails;
 
 
 import by.korona.sub.model.channel.TelegramChannel;
+import lombok.experimental.SuperBuilder;
 
-public class TelegramSubscriptionDetails extends SubscriptionDetails<TelegramChannel> {
+@SuperBuilder
+public class TelegramSubscriptionDetails extends SubscriptionDetails {
 }

@@ -8,4 +8,6 @@ public interface ChannelService {
     void unSubscribe(Long channelId, Long userId);
 
     ChannelType getChannelType();
+
+
 }

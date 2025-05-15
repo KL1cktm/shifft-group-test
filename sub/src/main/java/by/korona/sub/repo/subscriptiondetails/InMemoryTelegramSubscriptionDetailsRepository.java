@@ -36,8 +36,8 @@ public class InMemoryTelegramSubscriptionDetailsRepository implements Subscripti
     @Override
     public Optional<TelegramSubscriptionDetails> findActiveSubscription(Long userId, Long channelId) {
         return subscriptionDetails.stream()
-            .filter(s -> s.getUser().getId().equals(userId))
-            .filter(s -> s.getChannel().getId().equals(channelId))
+            .filter(s -> s.getUserId().equals(userId))
+            .filter(s -> s.getChannelId().equals(channelId))
             .filter(SubscriptionDetails::isSubscriptionStatus)
             .findFirst();
     }

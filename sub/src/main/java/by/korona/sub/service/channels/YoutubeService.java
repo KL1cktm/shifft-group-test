@@ -1,34 +1,49 @@
 package by.korona.sub.service.channels;
 
+import by.korona.sub.exception.ChannelNotFoundException;
+import by.korona.sub.exception.SubscriptionDetailsNotFoundException;
+import by.korona.sub.exception.UserNotFoundException;
 import by.korona.sub.model.User;
-import by.korona.sub.model.channel.Channel;
-import by.korona.sub.repo.channel.ChannelRepo;
+import by.korona.sub.model.channel.YouTubeChannel;
+import by.korona.sub.model.subscripriondetails.SubscriptionDetails;
+import by.korona.sub.model.subscripriondetails.YouTubeSubscriptionDetails;
 import by.korona.sub.repo.UserRepo;
+import by.korona.sub.repo.channel.ChannelRepo;
+import by.korona.sub.repo.subscriptiondetails.SubscriptionDetailRepository;
 import by.korona.sub.service.ChannelType;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-@Service
-public class YoutubeService implements ChannelService {
-    private final ChannelRepo channelRepo;
-    private final UserRepo userRepo;
+import java.time.LocalDateTime;
 
-    public YoutubeService(ChannelRepo channelRepo, UserRepo userRepo) {
-        this.channelRepo = channelRepo;
-        this.userRepo = userRepo;
-    }
+@Service
+@RequiredArgsConstructor
+public class YoutubeService implements ChannelService {
+    private final ChannelRepo<YouTubeChannel> channelRepo;
+    private final UserRepo userRepo;
+    private final SubscriptionDetailRepository<YouTubeSubscriptionDetails> subscriptionDetailRepository;
 
     @Override
     public void subscribe(Long channelId, Long userId) {
-        Channel channel = channelRepo.findById(channelId);
-        User user = userRepo.findById(userId);
-        channel.subscribeUser(user);
+        YouTubeChannel channel = channelRepo.findById(channelId)
+                .orElseThrow(() -> new ChannelNotFoundException("Канала с такими id: %d не существует".formatted(channelId)));
+        User user = userRepo.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException("Пользователя с такими id: %d не существует".formatted(userId)));
+        YouTubeSubscriptionDetails details = YouTubeSubscriptionDetails.builder()
+                .subscriptionAt(LocalDateTime.now())
+                .channelId(channel.getId())
+                .subscriptionStatus(true)
+                .userId(user.getId()).build();
+        subscriptionDetailRepository.save(details);
     }
 
     @Override
     public void unSubscribe(Long channelId, Long userId) {
-        Channel channel = channelRepo.findById(channelId);
-        User user = userRepo.findById(userId);
-        channel.unsubscribeUser(user);
+        YouTubeSubscriptionDetails details=subscriptionDetailRepository.findActiveSubscription(channelId, userId)
+                .orElseThrow(()->new SubscriptionDetailsNotFoundException("Такой подписки не найдено"));
+        details.setSubscriptionStatus(false);
+        details.setUnsubscriptionAt(LocalDateTime.now()); //todo Откуда берём время (сервер/клиент)
+        subscriptionDetailRepository.save(details);
     }
 
     @Override

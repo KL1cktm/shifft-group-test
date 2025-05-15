@@ -1,6 +1,8 @@
 package by.korona.sub.model.subscripriondetails;
 
 import by.korona.sub.model.channel.YouTubeChannel;
+import lombok.experimental.SuperBuilder;
 
-public class YouTubeSubscriptionDetails extends SubscriptionDetails<YouTubeChannel> {
+@SuperBuilder
+public class YouTubeSubscriptionDetails extends SubscriptionDetails {
 }
