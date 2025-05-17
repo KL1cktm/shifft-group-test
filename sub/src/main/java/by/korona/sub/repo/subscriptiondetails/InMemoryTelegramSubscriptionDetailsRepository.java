@@ -22,13 +22,14 @@ public class InMemoryTelegramSubscriptionDetailsRepository implements Subscripti
             if (subscriptionDetail.getId() == null) {
                 subscriptionDetail.setId(idGenerator.getId());
                 subscriptionDetails.add(subscriptionDetail);
+            } else {
+                TelegramSubscriptionDetails existingDetail = subscriptionDetails.stream()
+                        .filter(s -> s.getId().equals(subscriptionDetail.getId()))
+                        .findFirst()
+                        .orElseThrow(() -> new SubscriptionDetailsNotFoundException("Id: %s not found".formatted(subscriptionDetail.getId())));
+                subscriptionDetails.remove(existingDetail);
+                subscriptionDetails.add(subscriptionDetail);
             }
-            TelegramSubscriptionDetails existingDetail = subscriptionDetails.stream()
-                .filter(s -> s.getId().equals(subscriptionDetail.getId()))
-                .findFirst()
-                .orElseThrow(() -> new SubscriptionDetailsNotFoundException("Id: %s not found".formatted(subscriptionDetail.getId())));
-            subscriptionDetails.remove(existingDetail);
-            subscriptionDetails.add(subscriptionDetail);
         }
         return subscriptionDetail;
     }
@@ -36,9 +37,9 @@ public class InMemoryTelegramSubscriptionDetailsRepository implements Subscripti
     @Override
     public Optional<TelegramSubscriptionDetails> findActiveSubscription(Long userId, Long channelId) {
         return subscriptionDetails.stream()
-            .filter(s -> s.getUserId().equals(userId))
-            .filter(s -> s.getChannelId().equals(channelId))
-            .filter(SubscriptionDetails::isSubscriptionStatus)
-            .findFirst();
+                .filter(s -> s.getUserId().equals(userId))
+                .filter(s -> s.getChannelId().equals(channelId))
+                .filter(SubscriptionDetails::isSubscriptionStatus)
+                .findFirst();
     }
 }

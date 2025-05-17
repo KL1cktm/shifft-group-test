@@ -31,7 +31,7 @@ public class DefaultYouTubeChannelRepo implements ChannelRepo<YouTubeChannel> {
     private void init() {
         try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(getClass().getClassLoader().getResourceAsStream("repository/youtube-channels.json")))) {
             String collect = bufferedReader.lines().collect(Collectors.joining());
-            List<YouTubeChannel> list = objectMapper.readValue(collect, objectMapper.getTypeFactory().constructCollectionType(List.class, TelegramChannel.class));
+            List<YouTubeChannel> list = objectMapper.readValue(collect, objectMapper.getTypeFactory().constructCollectionType(List.class, YouTubeChannel.class));
             channels.addAll(list);
         } catch (IOException e) {
             throw new RuntimeException(e);

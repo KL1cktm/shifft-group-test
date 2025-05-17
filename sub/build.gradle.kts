@@ -17,6 +17,7 @@ dependencies {
     compileOnly("org.projectlombok:lombok:1.18.34")
 
     implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.6.0")
     implementation("ch.qos.logback:logback-classic:1.5.18")
     implementation("ch.qos.logback:logback-core:1.5.18")
 

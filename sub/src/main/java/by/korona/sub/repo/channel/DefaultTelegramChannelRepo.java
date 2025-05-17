@@ -17,6 +17,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 @RequiredArgsConstructor
 public class DefaultTelegramChannelRepo implements ChannelRepo<TelegramChannel> {
+
     private final List<TelegramChannel> channels;
     private final ObjectMapper objectMapper;
 

@@ -9,5 +9,4 @@ public interface ChannelService {
 
     ChannelType getChannelType();
 
-
 }

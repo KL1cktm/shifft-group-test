@@ -23,13 +23,14 @@ public class InMemoryYouTubeSubscriptionDetailsRepository implements Subscriptio
             if (subscriptionDetail.getId() == null) {
                 subscriptionDetail.setId(idGenerator.getId());
                 subscriptionDetails.add(subscriptionDetail);
+            } else {
+                YouTubeSubscriptionDetails existingDetail = subscriptionDetails.stream()
+                        .filter(s -> s.getId().equals(subscriptionDetail.getId()))
+                        .findFirst()
+                        .orElseThrow(() -> new SubscriptionDetailsNotFoundException("Id: %s not found".formatted(subscriptionDetail.getId())));
+                subscriptionDetails.remove(existingDetail);
+                subscriptionDetails.add(subscriptionDetail);
             }
-            YouTubeSubscriptionDetails existingDetail = subscriptionDetails.stream()
-                    .filter(s -> s.getId().equals(subscriptionDetail.getId()))
-                    .findFirst()
-                    .orElseThrow(() -> new SubscriptionDetailsNotFoundException("Id: %s not found".formatted(subscriptionDetail.getId())));
-            subscriptionDetails.remove(existingDetail);
-            subscriptionDetails.add(subscriptionDetail);
         }
         return subscriptionDetail;
     }

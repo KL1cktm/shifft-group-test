@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 public class DefaultSubscriptionService implements SubscriptionService {
+
     private final ChannelServiceResolver channelServiceResolver;
 
     public DefaultSubscriptionService(ChannelServiceResolver channelServiceResolver) {
