@@ -3,7 +3,6 @@ package by.korona.sub.service.channels;
 import by.korona.sub.exception.ChannelNotFoundException;
 import by.korona.sub.exception.SubscriptionDetailsNotFoundException;
 import by.korona.sub.exception.UserNotFoundException;
-import by.korona.sub.model.User;
 import by.korona.sub.model.channel.TelegramChannel;
 import by.korona.sub.model.subscripriondetails.SubscriptionDetailsPrimaryKey;
 import by.korona.sub.model.subscripriondetails.TelegramSubscriptionDetails;
@@ -29,9 +28,9 @@ public class TelegramService implements ChannelService {
 
     @Override
     public void subscribe(Long channelId, Long userId) {
-        TelegramChannel channel = channelRepo.findById(channelId)
+        channelRepo.findById(channelId)
                 .orElseThrow(() -> new ChannelNotFoundException("Канала с такими id: %d не существует".formatted(channelId)));
-        User user = userRepo.findById(userId)
+        userRepo.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException("Пользователя с такими id: %d не существует".formatted(userId)));
         TelegramSubscriptionDetails details = TelegramSubscriptionDetails.builder()
                 .subscriptionAt(LocalDateTime.now())
@@ -42,7 +41,7 @@ public class TelegramService implements ChannelService {
 
     @Override
     public void unSubscribe(Long channelId, Long userId) {
-        TelegramSubscriptionDetails details = subscriptionDetailRepository.findById()
+        TelegramSubscriptionDetails details = subscriptionDetailRepository.findById(new SubscriptionDetailsPrimaryKey(channelId, userId))
                 .orElseThrow(() -> new SubscriptionDetailsNotFoundException("Такой подписки не найдено"));
         details.setSubscriptionStatus(false);
         details.setUnsubscriptionAt(LocalDateTime.now()); //todo Откуда берём время (сервер/клиент)
