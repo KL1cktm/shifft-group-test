@@ -31,7 +31,7 @@ public class ExceptionApiHandler {
         return new ErrorResponse(HttpStatus.NOT_FOUND.value(), e.getMessage(), LocalDateTime.now(), Arrays.toString(e.getStackTrace()));
     }
 
-    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
     @ExceptionHandler({SubscriptionDetailsNotFoundException.class})
     public ErrorResponse handleSubscriptionDetailsNotFoundException(SubscriptionDetailsNotFoundException e) {
         log.warn(e.getMessage(), e);

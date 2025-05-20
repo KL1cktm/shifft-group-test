@@ -5,10 +5,11 @@ import by.korona.sub.exception.SubscriptionDetailsNotFoundException;
 import by.korona.sub.exception.UserNotFoundException;
 import by.korona.sub.model.User;
 import by.korona.sub.model.channel.TelegramChannel;
+import by.korona.sub.model.subscripriondetails.SubscriptionDetailsPrimaryKey;
 import by.korona.sub.model.subscripriondetails.TelegramSubscriptionDetails;
 import by.korona.sub.repo.UserRepo;
 import by.korona.sub.repo.channel.ChannelRepo;
-import by.korona.sub.repo.subscriptiondetails.SubscriptionDetailRepository;
+import by.korona.sub.repo.subscriptiondetails.DbTelegramSubscriptionDetailsRepository;
 import by.korona.sub.service.ChannelType;
 import org.springframework.stereotype.Service;
 
@@ -18,9 +19,9 @@ import java.time.LocalDateTime;
 public class TelegramService implements ChannelService {
     private final ChannelRepo<TelegramChannel> channelRepo;
     private final UserRepo userRepo;
-    private final SubscriptionDetailRepository<TelegramSubscriptionDetails> subscriptionDetailRepository;
+    private final DbTelegramSubscriptionDetailsRepository subscriptionDetailRepository;
 
-    public TelegramService(ChannelRepo<TelegramChannel> channelRepo, UserRepo userRepo, SubscriptionDetailRepository<TelegramSubscriptionDetails> subscriptionDetailRepository) {
+    public TelegramService(ChannelRepo<TelegramChannel> channelRepo, UserRepo userRepo, DbTelegramSubscriptionDetailsRepository subscriptionDetailRepository) {
         this.channelRepo = channelRepo;
         this.userRepo = userRepo;
         this.subscriptionDetailRepository = subscriptionDetailRepository;
@@ -34,15 +35,14 @@ public class TelegramService implements ChannelService {
                 .orElseThrow(() -> new UserNotFoundException("Пользователя с такими id: %d не существует".formatted(userId)));
         TelegramSubscriptionDetails details = TelegramSubscriptionDetails.builder()
                 .subscriptionAt(LocalDateTime.now())
-                .channelId(channel.getId())
-                .subscriptionStatus(true)
-                .userId(user.getId()).build();
+                .id(new SubscriptionDetailsPrimaryKey(channelId, userId))
+                .subscriptionStatus(true).build();
         subscriptionDetailRepository.save(details);
     }
 
     @Override
     public void unSubscribe(Long channelId, Long userId) {
-        TelegramSubscriptionDetails details = subscriptionDetailRepository.findActiveSubscription(channelId, userId)
+        TelegramSubscriptionDetails details = subscriptionDetailRepository.findById()
                 .orElseThrow(() -> new SubscriptionDetailsNotFoundException("Такой подписки не найдено"));
         details.setSubscriptionStatus(false);
         details.setUnsubscriptionAt(LocalDateTime.now()); //todo Откуда берём время (сервер/клиент)
