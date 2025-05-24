@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
 
-@Repository
+//@Repository
 @RequiredArgsConstructor
 public class InMemoryYouTubeSubscriptionDetailsRepository implements SubscriptionDetailRepository<YouTubeSubscriptionDetails> {
 
@@ -21,7 +21,7 @@ public class InMemoryYouTubeSubscriptionDetailsRepository implements Subscriptio
     public YouTubeSubscriptionDetails save(YouTubeSubscriptionDetails subscriptionDetail) {
         synchronized (subscriptionDetails) {
             if (subscriptionDetail.getId() == null) {
-                subscriptionDetail.setId(idGenerator.getId());
+                //subscriptionDetail.setId(idGenerator.getId());
                 subscriptionDetails.add(subscriptionDetail);
             } else {
                 YouTubeSubscriptionDetails existingDetail = subscriptionDetails.stream()
@@ -38,8 +38,8 @@ public class InMemoryYouTubeSubscriptionDetailsRepository implements Subscriptio
     @Override
     public Optional<YouTubeSubscriptionDetails> findActiveSubscription(Long userId, Long channelId) {
         return subscriptionDetails.stream()
-                .filter(s -> s.getUserId().equals(userId))
-                .filter(s -> s.getChannelId().equals(channelId))
+               // .filter(s -> s.getUserId().equals(userId))
+               // .filter(s -> s.getChannelId().equals(channelId))
                 .filter(SubscriptionDetails::isSubscriptionStatus)
                 .findFirst();
     }

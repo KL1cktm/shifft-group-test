@@ -1,8 +1,11 @@
 package by.korona.sub.model.subscripriondetails;
 
-import by.korona.sub.model.channel.YouTubeChannel;
+import jakarta.persistence.Entity;
 import lombok.experimental.SuperBuilder;
 
 @SuperBuilder
+@Entity(name = "youtubesubscriptiondetails")
 public class YouTubeSubscriptionDetails extends SubscriptionDetails {
+    public YouTubeSubscriptionDetails() {
+    }
 }

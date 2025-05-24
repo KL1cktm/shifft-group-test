@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
 
-@Repository
+//@Repository
 @RequiredArgsConstructor
 public class InMemoryTelegramSubscriptionDetailsRepository implements SubscriptionDetailRepository<TelegramSubscriptionDetails> {
     private final IdGenerator idGenerator;
@@ -20,7 +20,7 @@ public class InMemoryTelegramSubscriptionDetailsRepository implements Subscripti
     public TelegramSubscriptionDetails save(TelegramSubscriptionDetails subscriptionDetail) {
         synchronized (subscriptionDetails) {
             if (subscriptionDetail.getId() == null) {
-                subscriptionDetail.setId(idGenerator.getId());
+            //    subscriptionDetail.setId(idGenerator.getId());
                 subscriptionDetails.add(subscriptionDetail);
             } else {
                 TelegramSubscriptionDetails existingDetail = subscriptionDetails.stream()
@@ -37,8 +37,8 @@ public class InMemoryTelegramSubscriptionDetailsRepository implements Subscripti
     @Override
     public Optional<TelegramSubscriptionDetails> findActiveSubscription(Long userId, Long channelId) {
         return subscriptionDetails.stream()
-                .filter(s -> s.getUserId().equals(userId))
-                .filter(s -> s.getChannelId().equals(channelId))
+             //  .filter(s -> s.getUserId().equals(userId))
+             //  .filter(s -> s.getChannelId().equals(channelId))
                 .filter(SubscriptionDetails::isSubscriptionStatus)
                 .findFirst();
     }

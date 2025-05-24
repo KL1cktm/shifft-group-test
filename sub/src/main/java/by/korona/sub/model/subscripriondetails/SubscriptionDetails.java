@@ -1,6 +1,7 @@
 package by.korona.sub.model.subscripriondetails;
 
 import jakarta.persistence.EmbeddedId;
+import jakarta.persistence.MappedSuperclass;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,6 +13,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @SuperBuilder
+@MappedSuperclass
 public abstract class SubscriptionDetails {
     @EmbeddedId
     private SubscriptionDetailsPrimaryKey id;
